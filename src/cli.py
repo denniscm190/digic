@@ -2,16 +2,16 @@ import os
 import utils
 import click
 import shutil
-import api_methods
-import user_methods
-import wallet_methods
+import api
+import user
+import wallet
 
 dir_path = os.path.dirname(os.path.abspath(__file__))
 config_path = '{}/.config'.format(dir_path)
 
 
-@click.group()
-def cli():
+@click.group(name='cli')
+def cli_group():
     """
     A privacy focused command line tool to track your crypto portfolio
     """
@@ -43,7 +43,7 @@ def init():
     click.echo('')
     click.echo(click.style('USER CONFIGURATION', bold=True))
     username = click.prompt('Enter a username', default='Satoshi')
-    user_methods.modify_username(new_username=username)
+    user.modify_username(new_username=username)
     click.echo(f'>>> Hello {username}! Now let\'s set up your wallets')
 
     # Wallets
@@ -61,7 +61,7 @@ def init():
         wallet_type = click.prompt('Select a blockchain', type=click.Choice(['bitcoin', 'ethereum']))
         address = click.prompt('Enter your {} address'.format(wallet_type), type=str)
         label = click.prompt('How do we name your address?', type=str)
-        wallet_methods.add_wallet(wallet_type, label, address)
+        wallet.add_wallet(wallet_type, label, address)
         confirmation = True
 
     # APIs
@@ -73,7 +73,7 @@ def init():
     click.echo('>>> 3) https://coingecko.com')
     click.echo('>>> In order to use etherscan.io we need your api key')
     etherscan_key = click.prompt('Enter the etherscan.io key', type=str)
-    api_methods.add_api(vendor='etherscan.io', key=etherscan_key)
+    api.add_api(vendor='etherscan.io', key=etherscan_key)
     click.echo('>>> Testing APIs...')
     blockchain_url = 'https://blockchain.info/rawblock/00000000839a8e6886ab5951d76f411475428afc90947ee320161bbf18eb6048'
     coingecko_url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin'
@@ -106,9 +106,46 @@ def reset():
     shutil.rmtree(config_path, ignore_errors=True)
 
 
-cli.add_command(init)
-cli.add_command(reset)
+"""
+USER
+"""
+
+
+@click.group(name='user')
+def user_group():
+    """
+    Manage user data
+    """
+
+    pass
+
+
+@click.command(name='list')
+def user_list():
+    """
+    Show username
+    """
+
+    username = user.get_username()
+    click.echo(f'Username: {username}')
+
+
+@click.command(name='modify')
+@click.option('--username', '-u', type=str, required=True, help='New username')
+def user_modify(username):
+    """
+    Modify username
+    """
+
+    user.modify_username(new_username=username)
+
+
+cli_group.add_command(init)
+cli_group.add_command(reset)
+cli_group.add_command(user_group)
+user_group.add_command(user_list)
+user_group.add_command(user_modify)
 
 
 if __name__ == '__main__':
-    cli()
+    cli_group()

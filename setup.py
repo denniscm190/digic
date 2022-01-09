@@ -10,7 +10,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'digic = src.cli:cli',
+            'digic = src.cli:cli_group',
         ],
     },
 )
