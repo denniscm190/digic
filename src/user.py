@@ -8,7 +8,7 @@ config_path = '{}/.config'.format(dir_path)
 def get_username():
     """
     Get username
-    :return: None
+    :return: str
     """
 
     user_data = utils.read_json(path=f'{config_path}/user_data.json')

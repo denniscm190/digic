@@ -140,11 +140,43 @@ def user_modify(username):
     user.modify_username(new_username=username)
 
 
+@click.group(name='api')
+def api_group():
+    """
+    Manage API data
+    """
+
+    pass
+
+
+@click.command(name='list')
+def api_list():
+    """
+    Show API key
+    """
+
+    api_key = api.get_api()
+    click.echo(f'etherscan.io: {api_key}')
+
+
+@click.command(name='modify')
+@click.option('--key', '-k', type=str, required=True, help='New API key')
+def api_modify(key):
+    """
+    Modify API key
+    """
+
+    api.add_api(vendor='etherscan.io', key=key)
+
+
 cli_group.add_command(init)
 cli_group.add_command(reset)
 cli_group.add_command(user_group)
 user_group.add_command(user_list)
 user_group.add_command(user_modify)
+cli_group.add_command(api_group)
+api_group.add_command(api_list)
+api_group.add_command(api_modify)
 
 
 if __name__ == '__main__':
