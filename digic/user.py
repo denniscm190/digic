@@ -1,5 +1,5 @@
 import os
-import utils
+from digic import utils
 
 dir_path = os.path.dirname(os.path.abspath(__file__))
 config_path = '{}/.config'.format(dir_path)

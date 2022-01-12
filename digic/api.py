@@ -1,5 +1,5 @@
 import os
-import utils
+from digic import utils
 
 dir_path = os.path.dirname(os.path.abspath(__file__))
 config_path = '{}/.config'.format(dir_path)
@@ -16,9 +16,9 @@ def get_api():
     return api_data['etherscan.io']
 
 
-def add_api(vendor, key):
+def modify_api(vendor, key):
     """
-    Add or modify existing API
+    Modify existing API
     :param vendor: str, required
     :param key: str, required
     :return: None
