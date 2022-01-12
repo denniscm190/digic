@@ -103,17 +103,20 @@ The other APIs are public (without key).
 
 I spent some time searching for solutions to track my crypto
 portfolio. There are many in the market, but I do not trust them. 
-Most of them store my public keys in servers and others
+Most of them store my public keys in servers, and others
 require some kind of registration process to link my public 
 keys to my identity. For this reason, I created Digic.
+
+The idea is to create a program that runs locally and does not depend on
+any server or centralized API. This will be implemented gradually in 
+future versions.
 
 If you like Digic please consider becoming a contributor. I need
 help to improve it.
 
 ### Roadmap
-- [ ] Get contributors to the project
-- [ ] Support for Avalanche blockchain
-- [ ] Support multiple user accounts
+- [ ] Release beta `0.0.1`
+- [ ] Support Avalanche blockchain
 - [ ] Find a solution to stop depending on centralized APIs
 
 
