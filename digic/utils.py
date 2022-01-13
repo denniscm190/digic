@@ -42,3 +42,27 @@ def write_json(path, data):
 
     with open(path, 'w') as f:
         json.dump(data, f)
+
+
+def convert_to_eth(wei):
+    """
+    Convert wei to eth
+    :param wei: float, required
+    :return: float
+    """
+
+    eth = wei / 1000000000000000000
+
+    return eth
+
+
+def convert_to_btc(satoshi):
+    """
+    Convert satoshi to btc
+    :param satoshi: float, required
+    :return: float
+    """
+
+    btc = satoshi / 100000000
+
+    return btc

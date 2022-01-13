@@ -278,7 +278,9 @@ def portfolio_balance(type_, label):
     Show portfolio balance
     """
 
-    pass
+    balance = portfolio.get_balance(type_, label)
+    click.echo(click.style(f'{type_} wallet'.upper(), bold=True))
+    click.echo(f'{label}: {balance[label]}')
 
 
 @click.command(name='txs')
