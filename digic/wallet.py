@@ -1,8 +1,8 @@
-import os
+from pathlib import Path
 from digic import utils
 
-dir_path = os.path.dirname(os.path.abspath(__file__))
-config_path = '{}/.config'.format(dir_path)
+
+digic_path = str(f'{Path.home()}/.digic')
 
 
 def list_wallet():
@@ -11,7 +11,7 @@ def list_wallet():
     :return: dict
     """
 
-    wallet_data = utils.read_json(f'{config_path}/wallet_data.json')  # {'ethereum': {}, 'bitcoin': {}}
+    wallet_data = utils.read_json(f'{digic_path}/wallet_config.json')  # {'ethereum': {}, 'bitcoin': {}}
 
     return wallet_data
 
@@ -25,7 +25,7 @@ def add_wallet(wallet_type, label, address):
     :return: None
     """
 
-    file_path = f'{config_path}/wallet_data.json'
+    file_path = f'{digic_path}/wallet_config.json'
     wallet_data = utils.read_json(file_path)  # {'ethereum': {}, 'bitcoin': {}}
     wallets = wallet_data[wallet_type]  # {'label': 'address'}
     wallets[label] = address  # Add new wallet
@@ -40,7 +40,7 @@ def remove_wallet(wallet_type, label):
     :return: None
     """
 
-    file_path = f'{config_path}/wallet_data.json'
+    file_path = f'{digic_path}/wallet_config.json'
     wallet_data = utils.read_json(file_path)  # # {'ethereum': {}, 'bitcoin': {}}
     wallets = wallet_data[wallet_type]  # {'label': 'address'}
     del wallets[label]

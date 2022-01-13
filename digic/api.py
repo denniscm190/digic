@@ -1,8 +1,8 @@
-import os
+from pathlib import Path
 from digic import utils
 
-dir_path = os.path.dirname(os.path.abspath(__file__))
-config_path = '{}/.config'.format(dir_path)
+
+digic_path = str(f'{Path.home()}/.digic')
 
 
 def get_api():
@@ -11,7 +11,7 @@ def get_api():
     :return: str
     """
 
-    api_data = utils.read_json(path=f'{config_path}/api_data.json')
+    api_data = utils.read_json(path=f'{digic_path}/api_config.json')
 
     return api_data['etherscan.io']
 
@@ -24,7 +24,7 @@ def modify_api(vendor, key):
     :return: None
     """
 
-    file_path = f'{config_path}/api_data.json'
+    file_path = f'{digic_path}/api_config.json'
     api_data = utils.read_json(file_path)
     api_data[vendor] = key
     utils.write_json(file_path, api_data)

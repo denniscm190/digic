@@ -1,14 +1,14 @@
 import os
 import click
-import shutil
+from pathlib import Path
 from digic import utils
 from digic import api
 from digic import user
 from digic import wallet
 from digic import portfolio
 
-dir_path = os.path.dirname(os.path.abspath(__file__))
-config_path = '{}/.config'.format(dir_path)
+
+home_path = str(Path.home())
 
 
 @click.group(name='cli')
@@ -33,14 +33,23 @@ def init():
     Set up Digic for the first time
     """
 
+    warning = 'This action will delete all your configuration. Do you want to continue?'
+    click.confirm(click.style(warning, fg='red'), abort=True)
+
     # Create files
-    os.mkdir(config_path)
+    digic_path = f'{home_path}/.digic'
+    try:
+        os.mkdir(digic_path)
+    except FileExistsError:
+        pass
+
     user_data = {'username': ''}
     api_data = {'etherscan.io': ''}
     wallet_data = {'ethereum': {}, 'bitcoin': {}}
-    utils.write_json(f'{config_path}/user_data.json', user_data)
-    utils.write_json(f'{config_path}/api_data.json', api_data)
-    utils.write_json(f'{config_path}/wallet_data.json', wallet_data)
+
+    utils.write_json(f'{digic_path}/user_config.json', user_data)
+    utils.write_json(f'{digic_path}/api_config.json', api_data)
+    utils.write_json(f'{digic_path}/wallet_config.json', wallet_data)
 
     # User
     click.echo('')
@@ -100,17 +109,7 @@ def init():
     click.echo(click.style(reference_message, bold=True))
 
 
-@click.command()
-def reset():
-    """
-    Reset configuration
-    """
-
-    shutil.rmtree(config_path, ignore_errors=True)
-
-
 cli_group.add_command(init)
-cli_group.add_command(reset)
 
 
 """

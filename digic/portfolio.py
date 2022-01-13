@@ -1,8 +1,8 @@
-import os
+from pathlib import Path
 from digic import utils
 
-dir_path = os.path.dirname(os.path.abspath(__file__))
-config_path = '{}/.config'.format(dir_path)
+
+digic_path = str(f'{Path.home()}/.digic')
 
 
 def get_balance(wallet_type, label):
@@ -13,8 +13,8 @@ def get_balance(wallet_type, label):
     :return: dict
     """
 
-    wallet_file_path = f'{config_path}/wallet_data.json'
-    api_file_path = f'{config_path}/api_data.json'
+    wallet_file_path = f'{digic_path}/wallet_config.json'
+    api_file_path = f'{digic_path}/api_config.json'
     wallet_data = utils.read_json(wallet_file_path)  # {'ethereum': {}, 'bitcoin': {}}
     wallets = wallet_data[wallet_type]
     address = wallets[label]
