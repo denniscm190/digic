@@ -11,7 +11,7 @@ def list_wallet():
     :return: dict
     """
 
-    wallet_data = utils.read_json(f'{config_path}/wallet_data.json')
+    wallet_data = utils.read_json(f'{config_path}/wallet_data.json')  # {'ethereum': {}, 'bitcoin': {}}
 
     return wallet_data
 
@@ -26,11 +26,9 @@ def add_wallet(wallet_type, label, address):
     """
 
     file_path = f'{config_path}/wallet_data.json'
-    wallet_data = utils.read_json(file_path)
-    wallets = wallet_data[wallet_type]
-    new_address = {label: address}
-    wallets.append(new_address)
-    wallet_data[wallet_type] = wallets
+    wallet_data = utils.read_json(file_path)  # {'ethereum': {}, 'bitcoin': {}}
+    wallets = wallet_data[wallet_type]  # {'label': 'address'}
+    wallets[label] = address  # Add new wallet
     utils.write_json(file_path, wallet_data)
 
 
@@ -43,12 +41,7 @@ def remove_wallet(wallet_type, label):
     """
 
     file_path = f'{config_path}/wallet_data.json'
-    wallet_data = utils.read_json(file_path)  # {'ethereum': [{'label': 'address'}], 'bitcoin': [{'label': 'address'}]}
-    wallets = wallet_data[wallet_type]  # [{'label': 'address'}]
-    for wallet_item in wallets:  # {'label': 'address'}
-        for key in list(wallet_item.keys()):  # 'label'
-            if key == label:
-                wallets.remove(wallet_item)
-
-    wallet_data[wallet_type] = wallets
+    wallet_data = utils.read_json(file_path)  # # {'ethereum': {}, 'bitcoin': {}}
+    wallets = wallet_data[wallet_type]  # {'label': 'address'}
+    del wallets[label]
     utils.write_json(file_path, wallet_data)

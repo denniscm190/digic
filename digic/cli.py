@@ -37,7 +37,7 @@ def init():
     os.mkdir(config_path)
     user_data = {'username': ''}
     api_data = {'etherscan.io': ''}
-    wallet_data = {'ethereum': [], 'bitcoin': []}
+    wallet_data = {'ethereum': {}, 'bitcoin': {}}
     utils.write_json(f'{config_path}/user_data.json', user_data)
     utils.write_json(f'{config_path}/api_data.json', api_data)
     utils.write_json(f'{config_path}/wallet_data.json', wallet_data)
@@ -217,13 +217,12 @@ def wallet_list():
     Show wallets
     """
 
-    wallet_data = wallet.list_wallet()  # {'ethereum': [{'label': 'address'}], 'bitcoin': [{'label': 'address'}]}
+    wallet_data = wallet.list_wallet()  # {'ethereum': {}, 'bitcoin': {}}
     for wallet_type in list(wallet_data.keys()):  # 'ethereum' , 'bitcoin'
         click.echo(click.style(f'{wallet_type} wallets'.upper(), bold=True))
-        wallets = wallet_data[wallet_type]  # [{'label': 'address'}]
-        for wallet_item in wallets:  # {'label': 'address'}
-            for label in list(wallet_item.keys()):  # 'label'
-                click.echo(f'{label}: {wallet_item[label]}')
+        wallets = wallet_data[wallet_type]  # {'label': 'address'}
+        for label in list(wallets.keys()):
+            click.echo(f'{label}: {wallets[label]}')
 
 
 @click.command(name='add')
@@ -272,12 +271,14 @@ def portfolio_group():
 
 
 @click.command(name='balance')
-def portfolio_balance():
+@click.option('--type', '-t', 'type_', type=click.Choice(['ethereum', 'bitcoin']), required=True, help='blockchain')
+@click.option('--label', '-l', type=str, required=True, help='wallet name')
+def portfolio_balance(type_, label):
     """
     Show portfolio balance
     """
 
-    portfolio.get_balance()
+    pass
 
 
 @click.command(name='txs')
