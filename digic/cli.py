@@ -5,7 +5,6 @@ from digic import utils
 from digic import api
 from digic import user
 from digic import wallet
-from digic import portfolio
 
 
 home_path = str(Path.home())
@@ -30,7 +29,7 @@ def cli_group():
 @click.command()
 def init():
     """
-    Set up Digic for the first time
+    set up Digic
     """
 
     warning = 'This action will delete all your configuration. Do you want to continue?'
@@ -122,7 +121,7 @@ cli_group.add_command(init)
 @click.group(name='user')
 def user_group():
     """
-    Manage user data
+    manage user data
     """
 
     pass
@@ -131,7 +130,7 @@ def user_group():
 @click.command(name='list')
 def user_list():
     """
-    Show username
+    show username
     """
 
     username = user.get_username()
@@ -142,7 +141,7 @@ def user_list():
 @click.option('--username', '-u', type=str, required=True, help='New username')
 def user_modify(username):
     """
-    Modify username
+    modify username
     """
 
     user.modify_username(new_username=username)
@@ -163,7 +162,7 @@ user_group.add_command(user_modify)
 @click.group(name='api')
 def api_group():
     """
-    Manage API data
+    manage API data
     """
 
     pass
@@ -172,7 +171,7 @@ def api_group():
 @click.command(name='list')
 def api_list():
     """
-    Show API key
+    show API key
     """
 
     api_key = api.get_api()
@@ -183,7 +182,7 @@ def api_list():
 @click.option('--key', '-k', type=str, required=True, help='New API key')
 def api_modify(key):
     """
-    Modify API key
+    modify API key
     """
 
     api.modify_api(vendor='etherscan.io', key=key)
@@ -204,7 +203,7 @@ api_group.add_command(api_modify)
 @click.group(name='wallet')
 def wallet_group():
     """
-    Manage wallet data
+    manage wallet data
     """
 
     pass
@@ -213,7 +212,7 @@ def wallet_group():
 @click.command(name='list')
 def wallet_list():
     """
-    Show wallets
+    show wallets
     """
 
     wallet_data = wallet.list_wallet()  # {'ethereum': {}, 'bitcoin': {}}
@@ -230,7 +229,7 @@ def wallet_list():
 @click.option('--address', '-a', type=str, required=True, help='address')
 def wallet_add(type_, label, address):
     """
-    Add wallet
+    add wallet
     """
 
     wallet.add_wallet(type_, label, address)
@@ -241,58 +240,30 @@ def wallet_add(type_, label, address):
 @click.option('--label', '-l', type=str, required=True, help='wallet name')
 def wallet_remove(type_, label):
     """
-    Remove wallet
+    remove wallet
     """
 
     wallet.remove_wallet(type_, label)
+
+
+@click.command(name='balance')
+@click.option('--type', '-t', 'type_', type=click.Choice(['ethereum', 'bitcoin']), required=True, help='blockchain')
+@click.option('--label', '-l', type=str, required=True, help='wallet name')
+def wallet_balance(type_, label):
+    """
+    show wallet balance
+    """
+
+    balance = wallet.get_balance_wallet(type_, label)
+    click.echo(click.style(f'{type_} wallet'.upper(), bold=True))
+    click.echo(f'{label}: {balance[label]}')
 
 
 cli_group.add_command(wallet_group)
 wallet_group.add_command(wallet_list)
 wallet_group.add_command(wallet_add)
 wallet_group.add_command(wallet_remove)
-
-
-"""
-┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-                                                PORTFOLIO COMMANDS                                                                        
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘                   
-"""
-
-
-@click.group(name='portfolio')
-def portfolio_group():
-    """
-    Portfolio statistics
-    """
-
-    pass
-
-
-@click.command(name='balance')
-@click.option('--type', '-t', 'type_', type=click.Choice(['ethereum', 'bitcoin']), required=True, help='blockchain')
-@click.option('--label', '-l', type=str, required=True, help='wallet name')
-def portfolio_balance(type_, label):
-    """
-    Show portfolio balance
-    """
-
-    balance = portfolio.get_balance(type_, label)
-    click.echo(click.style(f'{type_} wallet'.upper(), bold=True))
-    click.echo(f'{label}: {balance[label]}')
-
-
-@click.command(name='txs')
-def portfolio_transactions():
-    """
-    Show the latest transactions of a specific address
-    """
-
-    pass
-
-
-cli_group.add_command(portfolio_group)
-portfolio_group.add_command(portfolio_balance)
+wallet_group.add_command(wallet_balance)
 
 
 if __name__ == '__main__':
