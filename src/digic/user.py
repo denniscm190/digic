@@ -1,7 +1,6 @@
 from pathlib import Path
 from digic import utils
 
-
 digic_path = str(f'{Path.home()}/.digic')
 
 

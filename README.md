@@ -75,6 +75,10 @@ Check if digic is correctly installed
 digic --help
 ```
 
+## Usage
+
+Check the [documentation](https://docs.digic.app) for more information 
+
 ## Privacy
 
 Digic works locally, which means that your public addresses are

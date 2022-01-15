@@ -1,11 +1,7 @@
 import os
 import click
 from pathlib import Path
-from digic import utils
-from digic import api
-from digic import user
-from digic import wallet
-
+from digic import api, utils, wallet, user
 
 home_path = str(Path.home())
 
@@ -36,7 +32,7 @@ def init():
     click.confirm(click.style(warning, fg='red'), abort=True)
 
     # Create files
-    digic_path = f'{home_path}/.digic'
+    digic_path = f'{home_path}/.src'
     try:
         os.mkdir(digic_path)
     except FileExistsError:
@@ -98,7 +94,7 @@ def init():
 
     # Reference
     success_message = '>>> Your configuration settings has been saved correctly!'
-    help_message = '>>> Enter the --help command if you need guidance using digic'
+    help_message = '>>> Enter the --help command if you need guidance using src'
     reference_message = '>>> Digic is an open source privacy focused command line tool to track your crypto ' \
                         'portfolio.\n>>> Consider contributing to the project https://github.com/denniscm190/digic\n'
 
