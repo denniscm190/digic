@@ -1,9 +1,9 @@
 import os
 import click
-from pathlib import Path
 from digic import api, utils, wallet, user
 
-home_path = str(Path.home())
+
+home_path = os.path.expanduser('~')
 
 
 @click.group(name='cli')
@@ -28,23 +28,21 @@ def init():
     set up Digic
     """
 
-    warning = 'This action will delete all your configuration. Do you want to continue?'
-    click.confirm(click.style(warning, fg='red'), abort=True)
-
     # Create files
-    digic_path = f'{home_path}/.src'
+    digic_path = os.path.join(home_path, '.digic')
     try:
         os.mkdir(digic_path)
     except FileExistsError:
-        pass
+        warning = 'This action will delete all your configuration. Do you want to continue?'
+        click.confirm(click.style(warning, fg='red'), abort=True)
 
     user_data = {'username': ''}
     api_data = {'etherscan.io': ''}
     wallet_data = {'ethereum': {}, 'bitcoin': {}}
 
-    utils.write_json(f'{digic_path}/user_config.json', user_data)
-    utils.write_json(f'{digic_path}/api_config.json', api_data)
-    utils.write_json(f'{digic_path}/wallet_config.json', wallet_data)
+    utils.write_json(os.path.join(digic_path, 'user_config.json'), user_data)
+    utils.write_json(os.path.join(digic_path, 'api_config.json'), api_data)
+    utils.write_json(os.path.join(digic_path, 'wallet_config.json'), wallet_data)
 
     # User
     click.echo('')

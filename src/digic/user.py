@@ -1,7 +1,9 @@
-from pathlib import Path
+import os
 from digic import utils
 
-digic_path = str(f'{Path.home()}/.digic')
+
+home_path = os.path.expanduser('~')
+digic_path = os.path.join(home_path, '.digic')
 
 
 def get_username():
@@ -10,7 +12,7 @@ def get_username():
     :return: str
     """
 
-    user_data = utils.read_json(path=f'{digic_path}/user_config.json')
+    user_data = utils.read_json(path=os.path.join(digic_path, 'user_config.json'))
 
     return user_data['username']
 
@@ -23,4 +25,4 @@ def modify_username(new_username):
     """
 
     user_data = {'username': new_username}
-    utils.write_json(path=f'{digic_path}/user_config.json', data=user_data)
+    utils.write_json(path=os.path.join(digic_path, 'user_config.json'), data=user_data)
