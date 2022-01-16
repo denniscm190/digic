@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name='src',
+    name='digic',
     version='0.0.1',
     description='A privacy focused command line tool to track your crypto portfolio',
     long_description=long_description,
