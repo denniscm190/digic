@@ -33,7 +33,7 @@ def init():
     try:
         os.mkdir(digic_path)
     except FileExistsError:
-        warning = 'This action will delete all your configuration. Do you want to continue?'
+        warning = 'This action will delete all your configuration settings. Do you want to continue?'
         click.confirm(click.style(warning, fg='red'), abort=True)
 
     user_data = {'username': ''}
@@ -49,13 +49,12 @@ def init():
     click.echo(click.style('USER CONFIGURATION', bold=True))
     username = click.prompt('Enter a username', default='Satoshi')
     user.modify_username(new_username=username)
-    click.echo(f'>>> Hello {username}! Now let\'s set up your wallets')
+    click.echo(f'Hello {username}!')
 
     # Wallets
     click.echo('')
     click.echo(click.style('WALLET CONFIGURATION', bold=True))
-    click.echo('>>> Add the public keys to follow')
-    click.echo(click.style('>>> Do not enter your PRIVATE keys. Never!', fg='bright_yellow'))
+    click.echo(click.style('Do not enter the PRIVATE keys. Never!', fg='bright_yellow'))
 
     confirmation = False
     while True:
@@ -64,32 +63,28 @@ def init():
                 break
 
         wallet_type = click.prompt('Select a blockchain', type=click.Choice(['bitcoin', 'ethereum']))
-        address = click.prompt('Enter your {} address'.format(wallet_type), type=str)
-        label = click.prompt('How do we name your address?', type=str)
+        address = click.prompt(f'Enter the {wallet_type} address', type=str)
+        label = click.prompt('Enter a name for the address', type=str)
         wallet.add_wallet(wallet_type, label, address)
         confirmation = True
 
     # APIs
     click.echo('')
     click.echo(click.style('API CONFIGURATION', bold=True))
-    click.echo('>>> To fetch blockchain data we use the following APIs')
-    click.echo('>>> 1) https://etherscan.io')
-    click.echo('>>> 2) https://blockchain.com')
-    click.echo('>>> 3) https://coingecko.com')
-    click.echo('>>> In order to use etherscan.io we need your api key')
-    etherscan_key = click.prompt('Enter the etherscan.io key', type=str)
+    click.echo('We use the following APIs to fetch data:')
+    click.echo('1) https://etherscan.io')
+    click.echo('2) https://blockchain.com')
+    click.echo('3) https://coingecko.com')
+    etherscan_key = click.prompt('Enter your etherscan.io API key', type=str)
     api.modify_api(vendor='etherscan.io', key=etherscan_key)
 
     # Reference
-    success_message = '>>> Your configuration settings has been saved correctly!'
-    help_message = '>>> Enter the --help command if you need guidance using src'
-    reference_message = '>>> Digic is an open source privacy focused command line tool to track your crypto ' \
-                        'portfolio.\n>>> Consider contributing to the project https://github.com/denniscm190/digic\n'
+    success_message = 'Your configuration settings has been saved correctly!'
+    reference_message = 'Source code: https://github.com/denniscm190/digic'
 
     click.echo('')
     click.echo(click.style(success_message, fg='green'))
-    click.echo(help_message)
-    click.echo(click.style(reference_message, bold=True))
+    click.echo(click.style(reference_message, italic=True))
 
 
 cli_group.add_command(init)
