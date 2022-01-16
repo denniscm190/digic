@@ -24,5 +24,5 @@ def modify_username(new_username):
     :return: None
     """
 
-    user_data = {'username': new_username}
+    user_data = {'username': new_username.replace(' ', '-')}
     utils.write_json(path=os.path.join(digic_path, 'user_config.json'), data=user_data)

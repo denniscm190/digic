@@ -29,6 +29,7 @@ def add_wallet(wallet_type, label, address):
     file_path = os.path.join(digic_path, 'wallet_config.json')
     wallet_data = utils.read_json(file_path)  # {'ethereum': {}, 'bitcoin': {}}
     wallets = wallet_data[wallet_type]  # {'label': 'address'}
+    label = label.replace(' ', '-').lower()
     wallets[label] = address  # Add new wallet
     utils.write_json(file_path, wallet_data)
 
