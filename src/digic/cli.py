@@ -79,16 +79,6 @@ def init():
     click.echo('>>> In order to use etherscan.io we need your api key')
     etherscan_key = click.prompt('Enter the etherscan.io key', type=str)
     api.modify_api(vendor='etherscan.io', key=etherscan_key)
-    click.echo('>>> Testing APIs...')
-    blockchain_url = 'https://blockchain.info/rawblock/00000000839a8e6886ab5951d76f411475428afc90947ee320161bbf18eb6048'
-    coingecko_url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin'
-    etherscan_url = f'https://api.etherscan.io/api?module=block&action=getblockreward&blockno=1&apikey={etherscan_key}'
-    utils.call_api(blockchain_url)
-    click.echo(click.style(u'>>> \u2713 blockchain.com', fg='green'))
-    utils.call_api(coingecko_url)
-    click.echo(click.style(u'>>> \u2713 coingecko.com', fg='green'))
-    utils.call_api(etherscan_url)
-    click.echo(click.style(u'>>> \u2713 etherscan.io', fg='green'))
 
     # Reference
     success_message = '>>> Your configuration settings has been saved correctly!'
